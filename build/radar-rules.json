@@ -28333,6 +28333,19 @@
       }
     ]
   },
+  "lephoceen.fr": {
+    "_name": "Le Phocéen",
+    ".": [
+      {
+        "title": "Fil Info Le Phocéen (Chrono)",
+        "docs": "https://docs.rsshub.app/routes/new-media",
+        "source": [
+          "/chrono"
+        ],
+        "target": "/lephoceen/chrono"
+      }
+    ]
+  },
   "letterboxd.com": {
     "_name": "Letterboxd",
     ".": [

@@ -1717,6 +1717,7 @@ export type RoutePath =
   | `/lemmy/:community/:sort?`
   | `/lenovo/drive/:selName`
   | `/lens/profile/:handle`
+  | `/lephoceen/chrono`
   | `/letterboxd/:username/watchlist`
   | `/lfsyd/home`
   | `/lfsyd/old_home`

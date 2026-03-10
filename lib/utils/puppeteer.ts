@@ -1,6 +1,9 @@
 import { anonymizeProxy } from 'proxy-chain';
 import type { Browser, Page } from 'rebrowser-puppeteer';
 import puppeteer from 'rebrowser-puppeteer';
+import puppeteer from 'puppeteer-core';
+import chromium from '@sparticuz/chromium-min';
+
 
 import { config } from '@/config';
 
@@ -21,9 +24,16 @@ const outPuppeteer = async () => {
             '--ignore-certificate-errors',
             '--ignore-certificate-errors-spki-list',
             `--user-agent=${config.ua}`,
+            // Vercel 必需参数
+            '--disable-dev-shm-usage', // 解决 Vercel 共享内存限制
+            '--no-zygote', // 单进程模式，减少内存占用
+            '--single-process', // 适配 Serverless 环境
+            '--disable-gpu', // Vercel 无 GPU 环境
+            '--disable-software-rasterizer',
         ],
-        headless: true,
+        headless: chromium.headless,
         ignoreHTTPSErrors: true,
+        executablePath: await chromium.executablePath(),
     };
 
     const insidePuppeteer: typeof puppeteer = puppeteer;
@@ -46,16 +56,14 @@ const outPuppeteer = async () => {
         ? insidePuppeteer.connect({
               browserWSEndpoint: config.puppeteerWSEndpoint,
           })
-        : insidePuppeteer.launch(
-              config.chromiumExecutablePath
-                  ? {
-                        executablePath: config.chromiumExecutablePath,
-                        ...options,
-                    }
-                  : options
-          ));
+        : insidePuppeteer.launch({
+              ...options,
+              // Vercel 环境下强制禁用自动化检测
+              ignoreDefaultArgs: ['--enable-automation'],
+          }));
     setTimeout(async () => {
-        await browser.close();
+        logger.info('Closing browser due to 30s timeout (Vercel compatible)');
+        await browser.close().catch(err => logger.error('Failed to close browser:', err));
     }, 30000);
 
     return browser;
@@ -89,9 +97,16 @@ export const getPuppeteerPage = async (
             '--ignore-certificate-errors',
             '--ignore-certificate-errors-spki-list',
             `--user-agent=${config.ua}`,
+            // Vercel 必需参数
+            '--disable-dev-shm-usage',
+            '--no-zygote',
+            '--single-process',
+            '--disable-gpu',
+            '--disable-software-rasterizer',
         ],
         headless: true,
         ignoreHTTPSErrors: true,
+        executablePath: await chromium.executablePath(), // 固定 Chromium 路径
     };
 
     const insidePuppeteer: typeof puppeteer = puppeteer;
@@ -139,20 +154,18 @@ export const getPuppeteerPage = async (
         const endpoint = endpointURL.toString();
         browser = await insidePuppeteer.connect({
             browserWSEndpoint: endpoint,
+            defaultViewport: null, // 适配 Vercel 视口
         });
     } else {
-        browser = await insidePuppeteer.launch(
-            config.chromiumExecutablePath
-                ? {
-                      executablePath: config.chromiumExecutablePath,
-                      ...options,
-                  }
-                : options
-        );
+        browser = await insidePuppeteer.launch({
+            ...options,
+            ignoreDefaultArgs: ['--enable-automation'], // 禁用自动化标识
+            timeout: 15000, // Vercel 冷启动超时（缩短至 15 秒）
+        });
     }
 
     setTimeout(async () => {
-        await browser.close();
+        await browser.close().catch(err => logger.error('Failed to close browser in getPuppeteerPage:', err));
     }, 30000);
 
     const page = await browser.newPage();
@@ -174,7 +187,11 @@ export const getPuppeteerPage = async (
 
     if (!instanceOptions.noGoto) {
         try {
-            await page.goto(url, instanceOptions.gotoConfig || { waitUntil: 'domcontentloaded' });
+            await page.goto(url, {
+                ...instanceOptions.gotoConfig,
+                waitUntil: instanceOptions.gotoConfig?.waitUntil || 'domcontentloaded',
+                timeout: 20000, // Vercel 环境下缩短导航超时（避免整体超时）
+            });
         } catch (error) {
             if (hasProxy && currentProxyState && proxy.multiProxy) {
                 logger.warn(`Puppeteer navigation failed with proxy ${currentProxyState.uri}, marking as failed: ${error}`);

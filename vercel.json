@@ -5,11 +5,6 @@
     "functions": {
         "src/server.mjs": {
             "includeFiles": "./src/templates/**/*.art"
-        },
-        "api/**/*.js": {
-          "runtime": "nodejs24.x",
-          "memory": 1024,
-          "maxDuration": 30
         }
     },
     "rewrites": [

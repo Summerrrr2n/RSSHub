@@ -1,6 +1,5 @@
 import { anonymizeProxy } from 'proxy-chain';
 import type { Browser, Page } from 'rebrowser-puppeteer';
-import puppeteer from 'rebrowser-puppeteer';
 import puppeteer from 'puppeteer-core';
 import chromium from '@sparticuz/chromium-min';
 

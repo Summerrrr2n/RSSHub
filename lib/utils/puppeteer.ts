@@ -60,6 +60,7 @@ const outPuppeteer = async () => {
               ...options,
               // Vercel 环境下强制禁用自动化检测
               ignoreDefaultArgs: ['--enable-automation'],
+              pipe: true,
           }));
     setTimeout(async () => {
         logger.info('Closing browser due to 30s timeout (Vercel compatible)');
@@ -159,6 +160,7 @@ export const getPuppeteerPage = async (
     } else {
         browser = await insidePuppeteer.launch({
             ...options,
+            pipe: true,
             ignoreDefaultArgs: ['--enable-automation'], // 禁用自动化标识
             timeout: 15000, // Vercel 冷启动超时（缩短至 15 秒）
         });

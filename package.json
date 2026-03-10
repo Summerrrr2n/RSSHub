@@ -120,7 +120,7 @@
         "rate-limiter-flexible": "9.1.1",
         "re2js": "1.2.2",
         "puppeteer-core": "^22.0.0",
-        "@sparticuz/chromium-min": "^12.x",
+        "@sparticuz/chromium-min": "^129.0.0",
         "rfc4648": "1.5.4",
         "rss-parser": "3.13.0",
         "sanitize-html": "2.17.1",

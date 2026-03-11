@@ -1886,9 +1886,6 @@
   "/comic-fuz/manga/:id": [
     "xiaobailoves"
   ],
-  "/comic-walker/manga/:id": [
-    "xiaobailoves"
-  ],
   "/comicat/search/:keyword": [
     "Cyang39"
   ],

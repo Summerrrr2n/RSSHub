@@ -625,7 +625,6 @@ export type RoutePath =
   | `/collabo-cafe/tag/:tag`
   | `/comic-fuz/magazine/:id`
   | `/comic-fuz/manga/:id`
-  | `/comic-walker/manga/:id`
   | `/comicat/search/:keyword`
   | `/comicskingdom/:name`
   | `/commonhealth/`

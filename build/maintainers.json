@@ -1711,6 +1711,12 @@
   "/cjlu/yjsy/:cate": [
     "chrisis58"
   ],
+  "/claude/blog": [
+    "zhenlohuang"
+  ],
+  "/claude/code/changelog": [
+    "rmaced0"
+  ],
   "/clickme/:site/:grouping/:name": [
     "hoilc"
   ],
@@ -1884,6 +1890,9 @@
     "xiaobailoves"
   ],
   "/comic-fuz/manga/:id": [
+    "xiaobailoves"
+  ],
+  "/comic-walker/manga/:id": [
     "xiaobailoves"
   ],
   "/comicat/search/:keyword": [

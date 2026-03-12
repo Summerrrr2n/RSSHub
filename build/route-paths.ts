@@ -566,6 +566,8 @@ export type RoutePath =
   | `/civitai/user/:username/articles`
   | `/ciweimao/chapter/:id`
   | `/cjlu/yjsy/:cate`
+  | `/claude/blog`
+  | `/claude/code/changelog`
   | `/clickme/:site/:grouping/:name`
   | `/cline/blog`
   | `/cloudflarestatus/`
@@ -625,6 +627,7 @@ export type RoutePath =
   | `/collabo-cafe/tag/:tag`
   | `/comic-fuz/magazine/:id`
   | `/comic-fuz/manga/:id`
+  | `/comic-walker/manga/:id`
   | `/comicat/search/:keyword`
   | `/comicskingdom/:name`
   | `/commonhealth/`
